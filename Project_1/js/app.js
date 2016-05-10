@@ -128,7 +128,6 @@
     if(inputVal === "h"){   // if hit, run dealNextCard() and if they don't bust, ask to hit or stay again
       dealNextCard(player);
       bustCheckPlayer();
-      hitOrStay();
     } else if(inputVal === "s"){   // if stay, run dealerPlays();
       dealerPlays();
     }
@@ -141,22 +140,39 @@
     printCard(person,card);
   };
 
-  var bustCheckPlayer = function(){
-    // check if player has busted
-    // if there's an ace in the hand, optimizeAce(), which checks for highest value of Ace that doesn't bust
-    // if not bust, run hitOrStay();
-    // if bust, set someoneBusted to true; houseWins(player.currentBet);
+  var bustCheckPlayer = function(){   // check if player has busted
+    // if(aceInHand){
+    //   // if there's an ace in the hand, optimizeAce(), which checks for highest value of Ace that doesn't bust
+    // }
+    if(player.handValue > 21){
+      alert("You BUSTED!!");
+      someoneBusted = true;
+      houseWins(player.currentBet);
+    } else {
+      hitOrStay();
+    }
   };
 
   var dealerPlays = function(){
-    // if(dealer.handValue < 17){dealNextCard(); bustCheckDealer();}
-    // if(dealer.handValue >=17 && <=21){dealerStay();}
+    if(dealer.handValue < 17){
+      console.log("Dealer Hits!")
+      dealNextCard(dealer); 
+      bustCheckDealer();
+    } else if(dealer.handValue >=17 && dealer.handValue <= 21){
+      console.log("Dealer Stays");
+      dealerStay();
+    }
   };
 
-  var bustCheckDealer = function(){
-    // check if dealer has busted
+  var bustCheckDealer = function(){   // check if dealer has busted
     // if there's an ace in the hand, optimizeAce(), which checks for highest value of Ace that doesn't bust
-    // if bust, set someoneBusted to true; housePays(player.currentBet * 2);
+    if(dealer.handValue > 21){   // if bust, set someoneBusted to true; housePays(player.currentBet);
+      alert("Dealer has BUSTED!!");
+      someoneBusted = true;
+      housePays(player.currentBet);
+    } else {
+      dealerPlays();
+    }
   };
 
   var optimizeAce = function(hand){
@@ -165,13 +181,22 @@
   };
 
   var dealerStay = function(){
-    // compareHands();
+    compareHands(player.handValue, dealer.handValue);
   };
 
   var compareHands = function(playerHand, dealerHand){
     // optimizeAce(playerHand);
     // optimizeAce(dealerHand);
-    // either houseWins(); or housePays(); or pushHands();
+    if(playerHand === dealerHand){
+      console.log("PUSH");
+      pushHands();
+    } else if(playerHand > dealerHand){
+      console.log("PLAYER WINS!!!");
+      housePays(player.currentBet);
+    } else if(playerHand < dealerHand){
+      console.log("Dealer Wins.");
+      houseWins();
+    }
   };
 
   var houseWins = function(){
@@ -181,7 +206,7 @@
     // redeal();
   };
 
-  var housePays = function(){
+  var housePays = function(bet){
     // player's bankroll increases by double their currentBet amount
     // bankrollCheck();
     // redeal();
