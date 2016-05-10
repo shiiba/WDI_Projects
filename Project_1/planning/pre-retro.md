@@ -16,10 +16,11 @@ Please email your appointed instructor the following. Please do not send a block
 In bullet points, please list the MVP criteria required to submit a satisfactory project.
 
 Functionality
-- Cards, decks as objects
-- Deck constructor
-- Shuffle function
-- Player bankroll
+
+- ~~Cards, decks as objects~~
+- ~~Deck constructor~~
+- ~~Shuffle function~~
+- ~~Player bankroll~~
 - Place bet function (one bet amount or prompt)
 - Deal hand function
 - Prompt: Hit or Stay
