@@ -98,6 +98,19 @@
     player.bankroll = 1000;
   };
 
+  var resetBets = function(){
+    player.currentBet = 0;
+  };
+
+  var resetHands = function(){
+    player.currentHand = [];
+    player.handValue = 0;
+    $("#player-hand").empty();
+    dealer.currentHand = [];
+    dealer.handValue = 0;
+    $("#dealer-hand").empty();
+  };
+
   var placeBet = function(){
     var betString = prompt("How much would you like to bet?","10");   // should prompt for bet Amount
     var playerBet = parseInt(betString);   // convert to number
@@ -116,6 +129,7 @@
     printCurrentHand(dealer);
     setHandValue(player);
     setHandValue(dealer);
+    hitOrStay();
   };
 
   var setHandValue = function(person){   // run each time a new card is dealt to set the handValue
@@ -124,12 +138,14 @@
   }
 
   var hitOrStay = function(){   // prompt user to hit or stay
-    var inputVal = prompt("Hit (h) or Stay (s)?");   // (*) [use buttons for choosing later?]
+    var inputVal = prompt("Hit (h), Stay (s) or e(x)it?");   // (*) [use buttons for choosing later?]
     if(inputVal === "h"){   // if hit, run dealNextCard() and if they don't bust, ask to hit or stay again
       dealNextCard(player);
       bustCheckPlayer();
     } else if(inputVal === "s"){   // if stay, run dealerPlays();
       dealerPlays();
+    } else if (inputVal === "x"){   // [remove later]
+      return;
     }
   };
 
@@ -200,36 +216,46 @@
   };
 
   var houseWins = function(){
-    // takes player's currentBet
-    // sets players currentBet to zero
-    // bankrollCheck();
-    // redeal();
+    player.currentBet = 0;   // sets players currentBet to zero
+    console.log("Player's bankroll is " + player.bankroll);
+    bankrollCheck();
+    redeal();
   };
 
   var housePays = function(bet){
-    // player's bankroll increases by double their currentBet amount
-    // bankrollCheck();
-    // redeal();
+    console.log("House pays player " + bet*2);
+    player.bankroll += (bet * 2)   // player's bankroll increases by double their currentBet amount
+    console.log("Player's bankroll is " + player.bankroll);
+    redeal();
   };
 
   var pushHands = function(){
-    // add player's currentBet back to their bankroll
-    // redeal();
+    player.bankroll += player.currentBet;   // add player's currentBet back to their bankroll
+    console.log("Player's bankroll is " + player.bankroll);
+    redeal();
   }
 
   var redeal = function(){
-    // clear player and dealer currentHand
-    // placeBet();
-    // dealCards();
+    resetHands();   // clear player and dealer currentHand
+    resetBets();   // clear player currentBet
+    placeBet();   // prompt for bets
+    dealCards();   // deal cards again
   }
 
   var bankrollCheck = function(){
-    // if player bankroll <= 0, 
+    if(player.bankroll <= 0){
+      gameOver();
+    }
   }
 
   var gameOver = function(){
-    // game over message
-    // replay() prompt
+    alert("GAME OVER.");   // game over message
+    var replayYN = prompt("Do you want to play again? (y/n)") // replay() prompt
+    if(replayYN === "y"){
+      replay();
+    } else  {
+      return;
+    }
   }
 
   var replay = function(){
@@ -258,9 +284,7 @@
   // - As a player, once I've placed a bet, the dealer should deal the cards
   dealCards();
 
-  // // - As a player, when the hands are dealt, I should be prompted to hit or stay ( (*) or split or double down)
-  hitOrStay();
-
+  
   // // - As a player, if I decide to hit, a new card is dealt to me and if I'm over 21, I bust
   // dealNextCard();
   // bustCheckPlayer();

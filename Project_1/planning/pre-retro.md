@@ -91,6 +91,7 @@ Please list bonus features you wish to accomplish time pending.
 - Image sprites for cards
 - Flip card / deal animation
 - Break out everything into classes
+- Can't bet more than you have in the bank
 - Dealer has one card face down
 - Insurance check function
 - Dealer face down card isn't inspectable
