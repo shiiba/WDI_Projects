@@ -2,48 +2,182 @@
 ////// GAME OBJECTS //////
 //////////////////////////
 
+// player objects
 var player = {
   bankroll: 1000,
   currentHand: [],
   handValue: 0,
   currentBet: null
-}
+};
 
 var dealer = {
   currentHand: [],
   handValue: 0,
-}
+};
 
 // card objects
-// deck objects
-// global variable for current shuffled deck
+var suits = ["Clubs", "Diamonds", "Hearts", "Spades"];
+
+var valuePoints = [
+  {value: "Ace", points: 1},
+  {value: "Two", points: 2},
+  {value: "Three", points: 3},
+  {value: "Four", points: 4},
+  {value: "Five", points: 5},
+  {value: "Six", points: 6},
+  {value: "Seven", points: 7},
+  {value: "Eight", points: 8},
+  {value: "Nine", points: 9},
+  {value: "Ten", points: 10},
+  {value: "Jack", points: 10},
+  {value: "Queen", points: 10},
+  {value: "King", points: 10}
+];
+
+var someoneBusted = false;
 
 //////////////////////////
 /// GAMEPLAY FUNCTIONS ///
 //////////////////////////
 
-// createDeck function
-// shuffleDeck function
+var createDeck = function(numDecks){   // take in the number of decks and generate an unshuffled deck array
+  var deck = [];
+  for(var d=0;d<numDecks;d++){
+    for(var i=0;i<suits.length;i++){
+      for(var j=0;j<valuePoints.length;j++){
+        var card = {};
+        card.name = (valuePoints[j].value + " of " + suits[i]);
+        card.value = valuePoints[j].value;
+        card.suit = suits[i];
+        card.points = valuePoints[j].points;
+        deck.push(card);
+      }
+    }
+  }
+  return deck;
+};
+
+var printDeck = function(deck){   // visually print out deck to check if it is shuffled
+  for(var i=0;i<deck.length;i++){
+    var deckDiv = document.getElementById("deck");
+    var card = document.createElement("p")
+    card.innerHTML = deck[i].name;
+    deckDiv.appendChild(card);
+  }
+};
+
+var shuffleDeck = function(unshuffled){   // trying to shuffle using a modern Fisher-Yates algorithm
+  var shuffled = [];
+  var numTimes = unshuffled.length;
+  for(var i=0;i<numTimes;i++){
+    var j = Math.floor(Math.random()*unshuffled.length);
+    var k = (unshuffled.length-1);
+    shuffled.push(unshuffled[j]);
+    unshuffled[j] = unshuffled[k];
+    unshuffled.pop();
+  }
+  return shuffled;
+};
 
 var getPlayerName = function(){   // get player's name 
   return prompt("What is your name?");
-}
+};
 
-var resetPlayerBankroll = function(){   // resets player bankroll
+var resetBankroll = function(){   // resets player bankroll
   player.bankroll = 1000;
-}
+};
 
 var placeBet = function(){
   // should prompt for bet Amount
   // decrement player bankroll by that amount
   // hold bet amount in a variable to be accessed later
-}
+};
 
 var dealCards = function(){
   // pop cards off the shuffled deck array and show 2 for each player
   // (*) deal out one card to player, one to dealer face down, one to player, one to dealer
+};
+
+var hitOrStay = function(){
+  // prompt user to hit or stay
+  // if hit, run dealNextCard();
+  // if stay, run dealerPlays();
+};
+
+var dealNextCard = function(){
+  // pops off next card in the shuffled deck array
+  // runs bustCheck();
+};
+
+var bustCheckPlayer = function(){
+  // check if player has busted
+  // if there's an ace in the hand, optimizeAce(), which checks for highest value of Ace that doesn't bust
+  // if not bust, run hitOrStay();
+  // if bust, set someoneBusted to true; houseWins(player.currentBet);
+};
+
+var dealerPlays = function(){
+  // if(dealer.handValue < 17){dealNextCard(); bustCheckDealer();}
+  // if(dealer.handValue >=17 && <=21){dealerStay();}
+};
+
+var bustCheckDealer = function(){
+  // check if dealer has busted
+  // if there's an ace in the hand, optimizeAce(), which checks for highest value of Ace that doesn't bust
+  // if bust, set someoneBusted to true; housePays(player.currentBet * 2);
+};
+
+var optimizeAce = function(hand){
+  // checks for highest value of the Ace that doesn't bust
+  // sets ace to that value
+};
+
+var dealerStay = function(){
+  // compareHands();
+};
+
+var compareHands = function(playerHand, dealerHand){
+  // optimizeAce(playerHand);
+  // optimizeAce(dealerHand);
+  // either houseWins(); or housePays(); or pushHands();
+};
+
+var houseWins = function(){
+  // takes player's currentBet
+  // sets players currentBet to zero
+  // bankrollCheck();
+  // redeal();
+};
+
+var housePays = function(){
+  // player's bankroll increases by double their currentBet amount
+  // bankrollCheck();
+  // redeal();
+};
+
+var pushHands = function(){
+  // add player's currentBet back to their bankroll
+  // redeal();
 }
 
+var redeal = function(){
+  // placeBet();
+  // dealCards();
+}
+
+var bankrollCheck = function(){
+  // if player bankroll <= 0, 
+}
+
+var gameOver = function(){
+  // game over message
+  // replay() prompt
+}
+
+var replay = function(){
+  // getPlayerName();
+  // resetBankroll();
+}
 
 //////////////////////////
 /////// GAMEPLAY  ////////
@@ -51,54 +185,70 @@ var dealCards = function(){
 
 // - As a player, when I refresh the page, I should be asked to enter my name
 getPlayerName();
+
 // - As a player, when I enter my name, I should see my bankroll and a prompt asking me to place a bet
+// initializeGameplay(); // HOW SHOULD THIS WORK?
+var unshuffledDeck = createDeck(1);
+var shuffledDeck = shuffleDeck(unshuffledDeck);
+// printDeck(shuffled);
+// console.log(shuffledDeck);
+// console.log(shuffledDeck.length);
 resetPlayerBankroll();
 placeBet();
+
 // - As a player, once I've placed a bet, the dealer should deal the cards
 dealCards();
+
 // - As a player, when the hands are dealt, I should be prompted to hit or stay ( (*) or split or double down)
 hitOrStay();
+
 // - As a player, if I decide to hit, a new card is dealt to me and if I'm over 21, I bust
 dealNextCard();
-bustCheck();
+bustCheckPlayer();
+
 // - As a player, if I don't bust, I should be prompted to hit or stay again
-if(bust === false){
+if(bustCheckPlayer === false){
   hitOrStay();
 }
+
 // - As a player, if I decide to stay, it's the dealers turn
 if(stay === true){
   dealerPlays();
 }
+
 // - As a dealer, if my card values add up to less than 17, I should automatically hit
 if(dealer.handValue < 17){
   dealNextCard();
-  bustCheck();
+  bustCheckDealer();
 }
+
 // - As a dealer, if my card equals 17 or higher, I should automatically stay
-if(dealer.handValue >= 17){
+if(dealer.handValue >= 17 && <=21){
   dealerStay();
 }
+
 // - As a dealer, once I bust or stay, I should compare the hands
-if(bustCheck === true || dealerStay === true){
-  compareHands();
+if(bustCheckDealer === false && dealerStay === true){
+  compareHands() && optimizeAce();
 }
+
 // - As a dealer, if I win, I should take the money the player bet
 if(dealerWin === true){
   houseWins(player.currentBet);
 }
+
 // - As a dealer, if I lose, I should pay money equal to the player bet
 if(dealerWin === false){
   housePays(player.currentBet);
 }
+
 // - As a player, after the hand, I am prompted to place a bet again
 placeBet();
 dealCards();
+
 // - As a player, if I run out of money, I lose the game
 // - As a player, if I lose the game, I should be prompted if I want to play again
 if(player.bankroll <= 0){
   alert("Game Over.");
   prompt("Play again?") ? gameReset() : endGame();
 }
-
-
-
