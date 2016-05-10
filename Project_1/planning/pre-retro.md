@@ -85,13 +85,14 @@ User Stories:
 Please list bonus features you wish to accomplish time pending.
 - Multiple bet amount
 - Blackjack check function
-- Insurance check function
 - Split function
 - Double Down function
 - Better styling to make it look like a casino table
 - Image sprites for cards
 - Flip card / deal animation
+- Break out everything into classes
 - Dealer has one card face down
+- Insurance check function
 - Dealer face down card isn't inspectable
 - Some animation when you win money / get blackjack
 - Keep track of how much you've won & lost
