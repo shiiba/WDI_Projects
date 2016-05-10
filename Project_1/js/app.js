@@ -145,7 +145,7 @@
     } else if(inputVal === "s"){   // if stay, run dealerPlays();
       dealerPlays();
     } else if (inputVal === "x"){   // [remove later]
-      return;
+      return false;
     }
   };
 
@@ -218,8 +218,9 @@
   var houseWins = function(){
     player.currentBet = 0;   // sets players currentBet to zero
     console.log("Player's bankroll is " + player.bankroll);
-    bankrollCheck();
-    redeal();
+    if(bankrollCheck()){
+      redeal();
+    }
   };
 
   var housePays = function(bet){
@@ -254,7 +255,7 @@
     if(replayYN === "y"){
       replay();
     } else  {
-      return;
+      return false;
     }
   }
 
@@ -267,73 +268,12 @@
   /////// GAMEPLAY  ////////
   //////////////////////////
 
-  // - As a player, when I refresh the page, I should be asked to enter my name
   getPlayerName();
-
-  // - As a player, when I enter my name, I should see my bankroll and a prompt asking me to place a bet
   // initializeGameplay(); // HOW SHOULD THIS WORK?
   var unshuffledDeck = createDeck(1);
   var shuffledDeck = shuffleDeck(unshuffledDeck);
-  // printDeck(shuffled);
-  // console.log(shuffledDeck);
-  // console.log(shuffledDeck.length);
-
   resetBankroll();
   placeBet();
-
-  // - As a player, once I've placed a bet, the dealer should deal the cards
   dealCards();
-
-  
-  // // - As a player, if I decide to hit, a new card is dealt to me and if I'm over 21, I bust
-  // dealNextCard();
-  // bustCheckPlayer();
-
-  // // - As a player, if I don't bust, I should be prompted to hit or stay again
-  // if(bustCheckPlayer === false){
-  //   hitOrStay();
-  // }
-
-  // // - As a player, if I decide to stay, it's the dealers turn
-  // // if(stay === true){
-  //   dealerPlays();
-  // // }
-
-  // // - As a dealer, if my card values add up to less than 17, I should automatically hit
-  // if(dealer.handValue < 17){
-  //   dealNextCard();
-  //   bustCheckDealer();
-  // }
-
-  // // - As a dealer, if my card equals 17 or higher, I should automatically stay
-  // if(dealer.handValue >= 17 && dealer.handValue <= 21){
-  //   dealerStay();
-  // }
-
-  // // - As a dealer, once I bust or stay, I should compare the hands
-  // if(bustCheckDealer === false && dealerStay === true){
-  //   compareHands() && optimizeAce();
-  // }
-
-  // // - As a dealer, if I win, I should take the money the player bet
-  // if(dealerWin === true){
-  //   houseWins(player.currentBet);
-  // }
-
-  // // - As a dealer, if I lose, I should pay money equal to the player bet
-  // if(dealerWin === false){
-  //   housePays(player.currentBet);
-  // }
-
-  // // - As a player, after the hand, I am prompted to place a bet again
-  // placeBet();
-  // dealCards();
-
-  // // - As a player, if I run out of money, I lose the game
-  // // - As a player, if I lose the game, I should be prompted if I want to play again
-  // if(player.bankroll <= 0){
-  //   alert("Game Over.");
-  //   prompt("Play again?") ? gameReset() : endGame();
-  // }
 
 // });
