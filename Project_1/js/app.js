@@ -38,11 +38,20 @@
     {value: "King", points: 10}
   ];
 
-  var someoneBusted = false;  // [do i need this for a while condition?]
+  // set global card variables
+  var unshuffledDeck;
+  var shuffledDeck;
 
   //////////////////////////
   /// GAMEPLAY FUNCTIONS ///
   //////////////////////////
+
+  var start = function(){
+    unshuffledDeck = createDeck(1);
+    shuffledDeck = shuffleDeck(unshuffledDeck);
+    placeBet();
+    dealCards();
+  };
 
   var createDeck = function(numDecks){   // take in the number of decks and generate an unshuffled deck array
     var deck = [];
@@ -162,7 +171,6 @@
     // }
     if(player.handValue > 21){
       alert("You BUSTED!!");
-      someoneBusted = true;
       houseWins(player.currentBet);
     } else {
       hitOrStay();
@@ -182,9 +190,8 @@
 
   var bustCheckDealer = function(){   // check if dealer has busted
     // if there's an ace in the hand, optimizeAce(), which checks for highest value of Ace that doesn't bust
-    if(dealer.handValue > 21){   // if bust, set someoneBusted to true; housePays(player.currentBet);
+    if(dealer.handValue > 21){   // if bust, housePays(player.currentBet);
       alert("Dealer has BUSTED!!");
-      someoneBusted = true;
       housePays(player.currentBet);
     } else {
       dealerPlays();
@@ -237,6 +244,7 @@
   }
 
   var redeal = function(){
+    console.log("redealing...");
     resetHands();   // clear player and dealer currentHand
     resetBets();   // clear player currentBet
     placeBet();   // prompt for bets
@@ -246,6 +254,8 @@
   var bankrollCheck = function(){
     if(player.bankroll <= 0){
       gameOver();
+    } else {
+      return true;
     }
   }
 
@@ -260,8 +270,10 @@
   }
 
   var replay = function(){
-    // getPlayerName();
-    // resetBankroll();
+    resetHands();
+    resetBets();
+    resetBankroll();
+    start();
   }
 
   //////////////////////////
@@ -269,11 +281,6 @@
   //////////////////////////
 
   getPlayerName();
-  // initializeGameplay(); // HOW SHOULD THIS WORK?
-  var unshuffledDeck = createDeck(1);
-  var shuffledDeck = shuffleDeck(unshuffledDeck);
-  resetBankroll();
-  placeBet();
-  dealCards();
-
+  start();
+  
 // });
