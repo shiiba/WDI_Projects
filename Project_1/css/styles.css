@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+#dealer-section, #player-section, #game-section {
+  width: 100%;
+  height: 260px;
+}
+
+#dealer-section {
+  background-color: lightgreen;
+}
+
+#player-section {
+  background-color: palegoldenrod;
+}
+
+#game-section {
+  background-color: lightcyan;
+}
