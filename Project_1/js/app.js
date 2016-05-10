@@ -9,12 +9,14 @@
     bankroll: 1000,
     currentHand: [],
     handValue: 0,
-    currentBet: null
+    currentBet: null,
+    handDiv: "player-hand"
   };
 
   var dealer = {
     currentHand: [],
     handValue: 0,
+    handDiv: "dealer-hand"
   };
 
   // card objects
@@ -59,14 +61,21 @@
     return deck;
   };
 
-  var printDeck = function(deck){   // visually print out deck to check if it is shuffled
-    for(var i=0;i<deck.length;i++){
-      var deckDiv = document.getElementById("deck");
+  var printCurrentHand = function(player){   // visually print out deck to check if it is shuffled
+    for(var i=0;i<player.currentHand.length;i++){
+      var deckDiv = document.getElementById(player.handDiv);
       var card = document.createElement("p")
-      card.innerHTML = deck[i].name;
+      card.innerHTML = player.currentHand[i].name;
       deckDiv.appendChild(card);
     }
   };
+
+  var printCard = function(player,dealtCard){
+    var deckDiv = document.getElementById(player.handDiv);
+    var card = document.createElement("p")
+    card.innerHTML = dealtCard.name;
+    deckDiv.appendChild(card);
+  }
 
   var shuffleDeck = function(unshuffled){   // trying to shuffle using a modern Fisher-Yates algorithm
     var shuffled = [];
@@ -103,30 +112,33 @@
     dealer.currentHand.push(shuffledDeck.pop());
     console.log("Deck has " + shuffledDeck.length + " cards left");
     // (*) [for now, just display cards all at once; later animate one at a time]
-    for(var i=0;i<player.currentHand.length;i++) {
-      $("#player-hand").append("<p>" + (player.currentHand[i].name) + "</p>");
-    }
-    for(var i=0;i<dealer.currentHand.length;i++) {
-      $("#dealer-hand").append("<p>" + dealer.currentHand[i].name + "</p>");
-    }
+    printCurrentHand(player);
+    printCurrentHand(dealer);
     setHandValue(player);
     setHandValue(dealer);
   };
 
-  var setHandValue = function(person){   // run each time a new card is dealt
+  var setHandValue = function(person){   // run each time a new card is dealt to set the handValue
     var pointsArray = person.currentHand.map(function(e){return e.points});   // grab the point value of all cards in currentHand
     person.handValue = pointsArray.reduce(function(a,b){return a+b});   // add them together and set to handValue
   }
 
-  var hitOrStay = function(){
-    // prompt user to hit or stay
-    // if hit, run dealNextCard();
-    // if stay, run dealerPlays();
+  var hitOrStay = function(){   // prompt user to hit or stay
+    var inputVal = prompt("Hit (h) or Stay (s)?");   // (*) [use buttons for choosing later?]
+    if(inputVal === "h"){   // if hit, run dealNextCard() and if they don't bust, ask to hit or stay again
+      dealNextCard(player);
+      bustCheckPlayer();
+      hitOrStay();
+    } else if(inputVal === "s"){   // if stay, run dealerPlays();
+      dealerPlays();
+    }
   };
 
-  var dealNextCard = function(){
-    // pops off next card in the shuffled deck array
-    // runs bustCheck();
+  var dealNextCard = function(person){
+    var card = shuffledDeck.pop();   // pops off next card in the shuffled deck array
+    person.currentHand.push(card);
+    setHandValue(person);
+    printCard(person,card);
   };
 
   var bustCheckPlayer = function(){
@@ -222,7 +234,7 @@
   dealCards();
 
   // // - As a player, when the hands are dealt, I should be prompted to hit or stay ( (*) or split or double down)
-  // hitOrStay();
+  hitOrStay();
 
   // // - As a player, if I decide to hit, a new card is dealt to me and if I'm over 21, I bust
   // dealNextCard();
