@@ -6,17 +6,21 @@
 
   // player objects
   var player = {
+    name: null,
     bankroll: 1000,
     currentHand: [],
     handValue: 0,
     currentBet: null,
-    handDiv: "player-hand"
+    handDiv: "player-hand",
+    hasAce: false
   };
 
   var dealer = {
+    name: dealer,
     currentHand: [],
     handValue: 0,
-    handDiv: "dealer-hand"
+    handDiv: "dealer-hand",
+    hasAce: false
   };
 
   // card objects
@@ -100,7 +104,7 @@
   };
 
   var getPlayerName = function(){   // get player's name 
-    return prompt("What is your name?", "Name");
+    player.name = prompt("What is your name?", "Name");
   };
 
   var resetBankroll = function(){   // resets player bankroll
@@ -136,22 +140,38 @@
     // (*) [for now, just display cards all at once; later animate one at a time]
     printCurrentHand(player);
     printCurrentHand(dealer);
+    setHasAce(player);
+    setHasAce(dealer);
     setHandValue(player);
     setHandValue(dealer);
     hitOrStay();
   };
 
+  var setHasAce = function(person){   // checks if there's an ace in the hand, if yes, the flags it in a boolean
+    for(var i=0;i<person.currentHand.length;i++){
+      if(person.currentHand[i].value === "Ace"){
+        console.log(person.name + " has an Ace");
+        person.hasAce = true;
+      }
+    }
+  };
+
   var setHandValue = function(person){   // run each time a new card is dealt to set the handValue
     var pointsArray = person.currentHand.map(function(e){return e.points});   // grab the point value of all cards in currentHand
     person.handValue = pointsArray.reduce(function(a,b){return a+b});   // add them together and set to handValue
-  }
+    if(person.hasAce === true){   // if there's an ace in the hand, optimizeAce()
+      optimizeAce(person);
+    }
+  };
 
   var hitOrStay = function(){   // prompt user to hit or stay
     var inputVal = prompt("Hit (h), Stay (s) or e(x)it?");   // (*) [use buttons for choosing later?]
     if(inputVal === "h"){   // if hit, run dealNextCard() and if they don't bust, ask to hit or stay again
+      console.log("Player Hits.")
       dealNextCard(player);
       bustCheckPlayer();
     } else if(inputVal === "s"){   // if stay, run dealerPlays();
+      console.log("Player Stays.")
       dealerPlays();
     } else if (inputVal === "x"){   // [remove later]
       return false;
@@ -161,14 +181,12 @@
   var dealNextCard = function(person){
     var card = shuffledDeck.pop();   // pops off next card in the shuffled deck array
     person.currentHand.push(card);
+    setHasAce(person);
     setHandValue(person);
     printCard(person,card);
   };
 
   var bustCheckPlayer = function(){   // check if player has busted
-    // if(aceInHand){
-    //   // if there's an ace in the hand, optimizeAce(), which checks for highest value of Ace that doesn't bust
-    // }
     if(player.handValue > 21){
       alert("You BUSTED!!");
       houseWins(player.currentBet);
@@ -189,7 +207,6 @@
   };
 
   var bustCheckDealer = function(){   // check if dealer has busted
-    // if there's an ace in the hand, optimizeAce(), which checks for highest value of Ace that doesn't bust
     if(dealer.handValue > 21){   // if bust, housePays(player.currentBet);
       alert("Dealer has BUSTED!!");
       housePays(player.currentBet);
@@ -198,9 +215,12 @@
     }
   };
 
-  var optimizeAce = function(hand){
-    // checks for highest value of the Ace that doesn't bust
-    // sets ace to that value
+  var optimizeAce = function(player){   // checks for highest value of the Ace that doesn't bust
+    console.log("optimizing ace...");
+    if(player.handValue < 12){
+      player.handValue += 10;
+      console.log("adding 10, because hasAce");
+    }
   };
 
   var dealerStay = function(){

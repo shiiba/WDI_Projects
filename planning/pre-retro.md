@@ -83,7 +83,6 @@ User Stories:
 <!-- 
 ### Bonus Criteria
 Please list bonus features you wish to accomplish time pending.
-- Multiple bet amount
 - Blackjack check function
 - Split function
 - Double Down function
