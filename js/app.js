@@ -12,8 +12,8 @@
     currentHand: [],
     handValue: 0,
     hasAce: false,
-    handDiv: "player-hand",
-    scoreDiv: "player-score"
+    handDiv: "#player-hand",
+    scoreDiv: "#player-score"
   };
 
   var dealer = {
@@ -21,8 +21,8 @@
     currentHand: [],
     handValue: 0,
     hasAce: false,
-    handDiv: "dealer-hand",
-    scoreDiv: "dealer-score"
+    handDiv: "#dealer-hand",
+    scoreDiv: "#dealer-score"
   };
 
   // card objects
@@ -74,6 +74,7 @@
           card.value = valuePoints[j].value;
           card.suit = suits[i];
           card.points = valuePoints[j].points;
+          card.class = (valuePoints[j].value.toLowerCase() + "-" + suits[i].toLowerCase());
           deck.push(card);
         }
       }
@@ -96,25 +97,22 @@
 
   var printCurrentHand = function(person){   // visually print out deck to check if it is shuffled
     for(var i=0;i<person.currentHand.length;i++){
-      var deckDiv = document.getElementById(person.handDiv);
-      var card = document.createElement("p");
-      card.innerHTML = person.currentHand[i].name;
-      deckDiv.appendChild(card);
+      var $handDiv = $(person.handDiv);
+      var $cardDiv = $("<div></div>").addClass(person.currentHand[i].class + " card");
+      $handDiv.append($cardDiv);
     }
   };
 
   var printCard = function(person,dealtCard){
-    var deckDiv = document.getElementById(person.handDiv);
-    var card = document.createElement("p");
-    card.innerHTML = dealtCard.name;
-    deckDiv.appendChild(card);
+    var $handDiv = $(person.handDiv);
+    var $cardDiv = $("<div></div>").addClass(dealtCard.class + " card");
+    $handDiv.append($cardDiv);
   };
 
   var printScore = function(person){
-    var scoreDiv = document.getElementById(person.scoreDiv);
-    var score = document.createElement("p");
-    score.innerHTML = person.handValue;
-    scoreDiv.appendChild(score);
+    var $scoreDiv = $(person.scoreDiv);
+    var $score = $("<div></div>").html(person.handValue);
+    $scoreDiv.append($score);
   };
 
   var resetBankroll = function(){   // resets player bankroll
