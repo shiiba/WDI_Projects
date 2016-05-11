@@ -16,7 +16,6 @@ Please email your appointed instructor the following. Please do not send a block
 In bullet points, please list the MVP criteria required to submit a satisfactory project.
 
 Functionality
-
 - ~~Cards, decks as objects~~
 - ~~Deck constructor~~
 - ~~Shuffle function~~
@@ -30,12 +29,33 @@ Functionality
 - ~~Compare hands function / push~~
 - ~~Payout function~~
 - ~~Bankroll check function~~
-- Ace: 11 or 1 function
+- ~~Ace: 11 or 1 function~~
 
 Style
 - Bare-bones structure of page with buttons for functionality
 - Text prompts to guide user through game flow
 - Visualize player bankroll
+
+### Bonus Criteria
+Please list bonus features you wish to accomplish time pending.
+
+Functionality
+- Split function
+- Double Down function
+- Blackjack check function
+- Can't bet more than you have in the bank
+- Insurance check function 
+
+Style
+- Better styling to make it look like a casino table
+- Image sprites for cards
+- Flip card / deal animation
+- Break out everything into classes
+- Dealer has one card face down
+- Dealer face down card isn't inspectable
+- Some animation when you win money / get blackjack
+- Keep track of how much you've won & lost
+- Game stats (win percentage; ROI)
 
 ### Project Plan
 Any timelines, project management tools (trello), etc.
@@ -71,34 +91,6 @@ User Stories:
 - (*) As a dealer, if the deck runs out, I should shuffle a new deck
 
 ### Misc.
-
-
-
-
-
-
-
-
-
-<!-- 
-### Bonus Criteria
-Please list bonus features you wish to accomplish time pending.
-- Blackjack check function
-- Split function
-- Double Down function
-- Better styling to make it look like a casino table
-- Image sprites for cards
-- Flip card / deal animation
-- Break out everything into classes
-- Can't bet more than you have in the bank
-- Dealer has one card face down
-- Insurance check function
-- Dealer face down card isn't inspectable
-- Some animation when you win money / get blackjack
-- Keep track of how much you've won & lost
-- Game stats (win percentage; ROI) -->
-
-
 
 
 

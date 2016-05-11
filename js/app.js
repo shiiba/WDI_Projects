@@ -8,19 +8,21 @@
   var player = {
     name: null,
     bankroll: 1000,
+    currentBet: null,
     currentHand: [],
     handValue: 0,
-    currentBet: null,
+    hasAce: false,
     handDiv: "player-hand",
-    hasAce: false
+    scoreDiv: "player-score"
   };
 
   var dealer = {
-    name: dealer,
+    name: "Dealer",
     currentHand: [],
     handValue: 0,
+    hasAce: false,
     handDiv: "dealer-hand",
-    hasAce: false
+    scoreDiv: "dealer-score"
   };
 
   // card objects
@@ -51,10 +53,15 @@
   //////////////////////////
 
   var start = function(){
-    unshuffledDeck = createDeck(1);
+    unshuffledDeck = createDeck(5);
     shuffledDeck = shuffleDeck(unshuffledDeck);
+    console.log("Player's bankroll is " + player.bankroll);
     placeBet();
     dealCards();
+  };
+
+  var getPlayerName = function(){   // get player's name 
+    player.name = prompt("What is your name?", "Name");
   };
 
   var createDeck = function(numDecks){   // take in the number of decks and generate an unshuffled deck array
@@ -74,22 +81,6 @@
     return deck;
   };
 
-  var printCurrentHand = function(player){   // visually print out deck to check if it is shuffled
-    for(var i=0;i<player.currentHand.length;i++){
-      var deckDiv = document.getElementById(player.handDiv);
-      var card = document.createElement("p")
-      card.innerHTML = player.currentHand[i].name;
-      deckDiv.appendChild(card);
-    }
-  };
-
-  var printCard = function(player,dealtCard){
-    var deckDiv = document.getElementById(player.handDiv);
-    var card = document.createElement("p")
-    card.innerHTML = dealtCard.name;
-    deckDiv.appendChild(card);
-  }
-
   var shuffleDeck = function(unshuffled){   // trying to shuffle using a modern Fisher-Yates algorithm
     var shuffled = [];
     var numTimes = unshuffled.length;
@@ -103,8 +94,27 @@
     return shuffled;
   };
 
-  var getPlayerName = function(){   // get player's name 
-    player.name = prompt("What is your name?", "Name");
+  var printCurrentHand = function(person){   // visually print out deck to check if it is shuffled
+    for(var i=0;i<person.currentHand.length;i++){
+      var deckDiv = document.getElementById(person.handDiv);
+      var card = document.createElement("p");
+      card.innerHTML = person.currentHand[i].name;
+      deckDiv.appendChild(card);
+    }
+  };
+
+  var printCard = function(person,dealtCard){
+    var deckDiv = document.getElementById(person.handDiv);
+    var card = document.createElement("p");
+    card.innerHTML = dealtCard.name;
+    deckDiv.appendChild(card);
+  };
+
+  var printScore = function(person){
+    var scoreDiv = document.getElementById(person.scoreDiv);
+    var score = document.createElement("p");
+    score.innerHTML = person.handValue;
+    scoreDiv.appendChild(score);
   };
 
   var resetBankroll = function(){   // resets player bankroll
@@ -118,14 +128,18 @@
   var resetHands = function(){
     player.currentHand = [];
     player.handValue = 0;
+    player.hasAce = false;
     $("#player-hand").empty();
+    $("#player-score").empty();
     dealer.currentHand = [];
     dealer.handValue = 0;
+    dealer.hasAce = false;
     $("#dealer-hand").empty();
+    $("#dealer-score").empty();
   };
 
   var placeBet = function(){
-    var betString = prompt("How much would you like to bet?","10");   // should prompt for bet Amount
+    var betString = prompt("How much would you like to bet?","100");   // should prompt for bet Amount
     var playerBet = parseInt(betString);   // convert to number
     player.currentBet = playerBet;   // set player currentBet to the input amount
     player.bankroll -= playerBet;   // decrement player bankroll by that amount
@@ -144,6 +158,8 @@
     setHasAce(dealer);
     setHandValue(player);
     setHandValue(dealer);
+    printScore(player);
+    printScore(dealer);
     hitOrStay();
   };
 
@@ -181,9 +197,12 @@
   var dealNextCard = function(person){
     var card = shuffledDeck.pop();   // pops off next card in the shuffled deck array
     person.currentHand.push(card);
+    console.log(person.name + " was dealt a " + card.value);
     setHasAce(person);
     setHandValue(person);
+    console.log(person.name + "'s hand is equal to " + person.handValue);
     printCard(person,card);
+    printScore(person);
   };
 
   var bustCheckPlayer = function(){   // check if player has busted
@@ -228,13 +247,11 @@
   };
 
   var compareHands = function(playerHand, dealerHand){
-    // optimizeAce(playerHand);
-    // optimizeAce(dealerHand);
     if(playerHand === dealerHand){
       console.log("PUSH");
       pushHands();
     } else if(playerHand > dealerHand){
-      console.log("PLAYER WINS!!!");
+      console.log(player.name + " WINS!!!");
       housePays(player.currentBet);
     } else if(playerHand < dealerHand){
       console.log("Dealer Wins.");
@@ -278,6 +295,10 @@
       return true;
     }
   }
+
+  // var reshuffle = function(){
+      // reshuffle if the deck runs out
+  // }
 
   var gameOver = function(){
     alert("GAME OVER.");   // game over message
