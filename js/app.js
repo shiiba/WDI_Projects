@@ -198,7 +198,11 @@
     setHandValue(dealer);
     printScore(player);
     printScore(dealer);
-    hitOrStay();
+    if(blackjackCheck()){
+      blackjackWin(player.handValue,dealer.handValue);
+    } else {
+      hitOrStay();
+    }
   };
 
   var setHasAce = function(person){   // checks if there's an ace in the hand, if yes, the flags it in a boolean
@@ -216,6 +220,18 @@
     person.handValue = pointsArray.reduce(function(a,b){return a+b});   // add them together and set to handValue
     if(person.hasAce === true){   // if there's an ace in the hand, optimizeAce()
       optimizeAce(person);
+    }
+  };
+
+  var blackjackCheck = function(){
+    if(player.handValue === 21 && dealer.handValue === 21){
+      return true;
+    } else if(player.handValue === 21) {
+      alert("YOU GOT BLACKJACK!!");   // [change these alerts later]
+      return true;
+    } else if(dealer.handValue === 21) {
+      alert("Dealer has BlackJack.");   // [change these alerts later]
+      return true;
     }
   };
 
@@ -293,6 +309,20 @@
     }
   };
 
+  var blackjackWin = function(playerHand, dealerHand){
+    console.log("blackjackWin()");
+    if(playerHand === dealerHand){
+      printGamePrompt("Blackjack PUSH");
+      pushHands();
+    } else if(playerHand > dealerHand){
+      printGamePrompt(player.name + " WINS WITH BLACKJACK!!!");
+      blackjackPay(player.currentBet);
+    } else if(playerHand < dealerHand){
+      printGamePrompt("Dealer Wins with Blackjack.");
+      houseWins();
+    }
+  };
+
   var houseWins = function(){
     console.log("houseWins()");
     player.currentBet = 0;   // sets players currentBet to zero
@@ -309,6 +339,14 @@
     printBankroll();
     redeal();
   };
+
+  var blackjackPay = function(bet){
+    console.log("blackjackPay()");
+    printGamePrompt("Dealer pays player " + (Math.round(bet*3/2)));
+    player.bankroll += (Math.round(bet*3/2))   // player's bankroll increases by double their currentBet amount
+    printBankroll();
+    redeal();
+  }
 
   var pushHands = function(){
     console.log("pushHands()");
