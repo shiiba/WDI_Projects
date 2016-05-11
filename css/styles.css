@@ -17,7 +17,8 @@ h1 {
 }
 
 #player-section {
-  background-color: palegoldenrod;
+  background-color: lightgreen;
+  border-top: dotted 2px gray;
 }
 
 #game-section {

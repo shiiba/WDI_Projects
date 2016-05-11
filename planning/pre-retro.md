@@ -34,7 +34,7 @@ Functionality
 Style
 - ~~Bare-bones structure of page with buttons for functionality~~
 - ~~Text prompts to guide user through game flow~~
-- Visualize player bankroll
+- ~~Visualize player bankroll~~
 
 ### Bonus Criteria
 Please list bonus features you wish to accomplish time pending.
@@ -48,7 +48,7 @@ Functionality
 
 Style
 - Better styling to make it look like a casino table
-- Image sprites for cards
+- ~~Image sprites for cards~~
 - Flip card / deal animation
 - Break out everything into classes
 - Dealer has one card face down

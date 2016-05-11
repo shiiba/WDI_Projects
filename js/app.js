@@ -48,7 +48,7 @@
   var unshuffledDeck;
   var shuffledDeck;
 
-  // event listeners
+  // global control button event listeners
   $("#hit").on("click",function(){
     $(".control").addClass("hidden");
     printGamePrompt(player.name + " hits.")
@@ -129,7 +129,7 @@
   var printScore = function(person){
     var $scoreDiv = $(person.scoreDiv);
     $scoreDiv.empty();
-    var $score = $("<div></div>").html(person.handValue);
+    var $score = $("<div></div>").html("Hand Value: " + person.handValue);
     $scoreDiv.append($score);
   };
 
