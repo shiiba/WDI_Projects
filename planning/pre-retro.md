@@ -32,8 +32,8 @@ Functionality
 - ~~Ace: 11 or 1 function~~
 
 Style
-- Bare-bones structure of page with buttons for functionality
-- Text prompts to guide user through game flow
+- ~~Bare-bones structure of page with buttons for functionality~~
+- ~~Text prompts to guide user through game flow~~
 - Visualize player bankroll
 
 ### Bonus Criteria
