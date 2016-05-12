@@ -46,12 +46,12 @@ Functionality
 - ~~Blackjack payout~~
 - Can't bet more than you have in the bank
 - Insurance check function 
+- Break out everything into classes
 
 Style
 - ~~Better styling to make it look like a casino table~~
 - ~~Image sprites for cards~~
 - Flip card / deal animation
-- Break out everything into classes
 - Dealer has one card face down
 - Dealer face down card isn't inspectable
 - Some animation when you win money / get blackjack

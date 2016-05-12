@@ -64,9 +64,9 @@
     printGamePrompt(player.name + " stays.");
     dealerPlays();
   });
-  $("#exit").on("click",function(){
+  $("#split").on("click",function(){
     $(".control").addClass("hidden");
-    return false;
+    // split functionality
   });
 
   //////////////////////////
@@ -85,10 +85,6 @@
   var getPlayerName = function(){   // get player's name 
     return prompt("What is your name?", "Name");
   };
-
-  var printPlayerName = function(){   // print player name on screen
-    $("#player-name").html(nameInput);
-  }
 
   var createDeck = function(numDecks){   // take in the number of decks and generate an unshuffled deck array
     var deck = [];
@@ -120,6 +116,11 @@
     }
     return shuffled;
   };
+
+// PRINT FUNCTIONS (display things in DOM)
+  var printPlayerName = function(){   // print player name on screen
+    $("#player-name").html(nameInput);
+  }
 
   var printCurrentHand = function(person){   // visually print out deck to check if it is shuffled
     for(var i=0;i<person.currentHand.length;i++){
@@ -159,29 +160,8 @@
     $bankDiv.append($bet, $money);
   }
 
-  var resetBankroll = function(){   // resets player bankroll
-    player.bankroll = 1000;
-  };
 
-  var resetBets = function(){
-    console.log("resetBets()");
-    player.currentBet = 0;
-  };
-
-  var resetHands = function(){
-    console.log("resetHands()");
-    player.currentHand = [];
-    player.handValue = 0;
-    player.hasAce = false;
-    $("#player-hand").empty();
-    $("#player-score").empty();
-    dealer.currentHand = [];
-    dealer.handValue = 0;
-    dealer.hasAce = false;
-    $("#dealer-hand").empty();
-    $("#dealer-score").empty();
-  };
-
+// GAMEPLAY FUNCTIONS
   var placeBet = function(){
     console.log("placeBet()");
     var betString = prompt("How much would you like to bet?","100");   // should prompt for bet Amount
@@ -206,14 +186,57 @@
     setHandValue(player);
     setHandValue(dealer);
     printScore(player);
-    printScore(dealer);
     if(blackjackCheck()){
       blackjackWin(player.handValue,dealer.handValue);
+    } else if (splitCheck()){
+      splitShow();
     } else {
       hitOrStay();
     }
   };
 
+  var hitOrStay = function(){   // prompt user to hit or stay
+    console.log("hitOrStay()");
+    $(".hitstay").removeClass("hidden");
+  };
+
+  var splitShow = function(){
+    console.log("splitShow()");
+    $(".hitstay").removeClass("hidden");
+    $("#split").removeClass("hidden");
+  }
+
+  var dealNextCard = function(person){
+    console.log("dealNextCard()");
+    var card = shuffledDeck.pop();   // pops off next card in the shuffled deck array
+    person.currentHand.push(card);
+    printGamePrompt(person.name + " was dealt a " + card.value);
+    setHasAce(person);
+    setHandValue(person);
+    printGamePrompt(person.name + "'s hand is equal to " + person.handValue);
+    printCard(person,card);
+    printScore(person);
+  };
+
+  var dealerPlays = function(){
+    console.log("dealerPlays()");
+    printScore(dealer);
+    if(dealer.handValue < 17){
+      printGamePrompt("Dealer Hits!");
+      dealNextCard(dealer); 
+      bustCheckDealer();
+    } else if(dealer.handValue >=17 && dealer.handValue <= 21){
+      printGamePrompt("Dealer stays.");
+      dealerStay();
+    }
+  };
+
+  var dealerStay = function(){
+    console.log("dealerStay()");
+    compareHands(player.handValue, dealer.handValue);
+  };
+
+// SET, BUST & COMPARE FUNCTIONS
   var setHasAce = function(person){   // checks if there's an ace in the hand, if yes, the flags it in a boolean
     console.log("setHasAce()");
     for(var i=0;i<person.currentHand.length;i++){
@@ -232,33 +255,6 @@
     }
   };
 
-  var blackjackCheck = function(){
-    if(player.handValue === 21 && dealer.handValue === 21){
-      return true;
-    } else if(player.handValue === 21) {
-      return true;
-    } else if(dealer.handValue === 21) {
-      return true;
-    }
-  };
-
-  var hitOrStay = function(){   // prompt user to hit or stay
-    console.log("hitOrStay()");
-    $(".control").removeClass("hidden");
-  };
-
-  var dealNextCard = function(person){
-    console.log("dealNextCard()");
-    var card = shuffledDeck.pop();   // pops off next card in the shuffled deck array
-    person.currentHand.push(card);
-    printGamePrompt(person.name + " was dealt a " + card.value);
-    setHasAce(person);
-    setHandValue(person);
-    printGamePrompt(person.name + "'s hand is equal to " + person.handValue);
-    printCard(person,card);
-    printScore(person);
-  };
-
   var bustCheckPlayer = function(){   // check if player has busted
     console.log("bustCheckPlayer()");
     if(player.handValue > 21){
@@ -267,18 +263,6 @@
       houseWins(player.currentBet);
     } else {
       hitOrStay();
-    }
-  };
-
-  var dealerPlays = function(){
-    console.log("dealerPlays()");
-    if(dealer.handValue < 17){
-      printGamePrompt("Dealer Hits!");
-      dealNextCard(dealer); 
-      bustCheckDealer();
-    } else if(dealer.handValue >=17 && dealer.handValue <= 21){
-      printGamePrompt("Dealer stays.");
-      dealerStay();
     }
   };
 
@@ -293,15 +277,29 @@
     }
   };
 
+  var blackjackCheck = function(){
+    if(player.handValue === 21 && dealer.handValue === 21){
+      return true;
+    } else if(player.handValue === 21) {
+      return true;
+    } else if(dealer.handValue === 21) {
+      return true;
+    }
+  };
+
+  var splitCheck = function(){   // prompt user to hit or stay
+    console.log("splitCheck()");
+    if(player.currentHand[0].value === player.currentHand[1].value){
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   var optimizeAce = function(player){   // checks for highest value of the Ace that doesn't bust
     if(player.handValue < 12){
       player.handValue += 10;
     }
-  };
-
-  var dealerStay = function(){
-    console.log("dealerStay()");
-    compareHands(player.handValue, dealer.handValue);
   };
 
   var compareHands = function(playerHand, dealerHand){
@@ -337,6 +335,7 @@
     }
   };
 
+// PAY FUNCTIONS
   var houseWins = function(){
     console.log("houseWins()");
     player.currentBet = 0;   // sets players currentBet to zero
@@ -369,6 +368,7 @@
     redeal();
   }
 
+// REDEAL & RESET FUNCTIONS
   var redeal = function(){
     console.log("redeal()");
     resetHands();   // clear player and dealer currentHand
@@ -379,6 +379,29 @@
     placeBet();   // prompt for bets
     dealCards();   // deal cards again
   }
+
+  var resetBankroll = function(){   // resets player bankroll
+    player.bankroll = 1000;
+  };
+
+  var resetBets = function(){
+    console.log("resetBets()");
+    player.currentBet = 0;
+  };
+
+  var resetHands = function(){
+    console.log("resetHands()");
+    player.currentHand = [];
+    player.handValue = 0;
+    player.hasAce = false;
+    $("#player-hand").empty();
+    $("#player-score").empty();
+    dealer.currentHand = [];
+    dealer.handValue = 0;
+    dealer.hasAce = false;
+    $("#dealer-hand").empty();
+    $("#dealer-score").empty();
+  };
 
   var bankrollCheck = function(){
     console.log("bankrollCheck()");
