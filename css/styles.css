@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Candal);
+
 * {
   margin: 0;
   /*background-color: rgb(0,144,47);*/
@@ -5,58 +7,101 @@
 
 h1 {
   text-align: center;
+  font-family: 'Candal', sans-serif;
+  font-size: 36px;
+  padding-top: 5px;
+}
+
+h2 {
+  text-align: center;
+  font-family: 'Candal', sans-serif;
+  font-size: 20px;
 }
 
 #dealer-section, #player-section {
   width: 100%;
-  height: 280px;
+  height: 300px;
 }
 
 #dealer-section {
-  background-color: lightgreen;
+  background-color: rgb(9,88,7);
+  color: white;
 }
 
 #player-section {
-  background-color: lightgreen;
+  background-color: rgb(9,88,7);
   border-top: dotted 2px gray;
+  color: white;
 }
 
 #game-section {
   width: 100%;
-  height: 220px;
+  height: 175px;
   background-color: lightcyan;
+  border: solid 2px black;
 }
 
 #player-hand, #dealer-hand {
-  width: 90%;
-  margin: 0 auto;
+  text-align: center;
+  margin: 10px 0 10px 0;
+}
+
+#player-score, #dealer-score {
+  text-align: center;
 }
 
 #game-flow {
-  width: 32.3%;
+  width: 30%;
+  height: 175px;
+  padding: 0 10px 0 10px;
   display: inline-block;
   vertical-align: top;
+  border-right: solid 2px black;
+  overflow: auto;
 }
 
 #game-controls {
-  width: 32.3%;
+  width: 30%;
+  height: 175px;
+  padding: 0 10px 0 10px;
   display: inline-block;
   vertical-align: top;
+  border-right: solid 2px black;
+  text-align: center;
 }
 #bank {
-  width: 32.3%;
+  width: 30%;
+  height: 175px;
+  padding: 0 10px 0 10px;
   display: inline-block;
   vertical-align: top;
 }
 
 #game-prompts {
-  width: 49%;
-  display: inline-block;
-  clear: left;
+  margin-top: 20px;
 }
 
 #bank-vault{
+  margin-top: 20px;
+}
 
+#buttons {
+  margin-top: 20px;
+}
+
+.control {
+  border-radius: 16px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 14px;
+  background: #39a5ed;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.control:hover {
+  background: #3cb0fd;
+  text-decoration: none;
 }
 
 .hidden {
@@ -73,6 +118,7 @@ h1 {
   display: inline-block;
   z-index: 3;
   background-size: cover;
+  margin: 0 auto;
 }
 
 .score {

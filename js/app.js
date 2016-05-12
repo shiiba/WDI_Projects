@@ -5,15 +5,15 @@
   //////////////////////////
 
   // player objects
-  var player = {
-    name: null,
-    bankroll: 1000,
-    currentBet: 0,
-    currentHand: [],
-    handValue: 0,
-    hasAce: false,
-    handDiv: "#player-hand",
-    scoreDiv: "#player-score"
+  function Player(name) {
+    this.name = name,
+    this.bankroll = 1000,
+    this.currentBet = 0,
+    this.currentHand = [],
+    this.handValue = 0,
+    this.hasAce = false,
+    this.handDiv = "#player-hand",
+    this.scoreDiv = "#player-score"
   };
 
   var dealer = {
@@ -48,16 +48,20 @@
   var unshuffledDeck;
   var shuffledDeck;
 
+  //////////////////////////
+  //// EVENT LISTENERS /////
+  //////////////////////////
+
   // global control button event listeners
   $("#hit").on("click",function(){
     $(".control").addClass("hidden");
-    printGamePrompt(player.name + " hits.")
+    printGamePrompt(player.name + " hits.");
     dealNextCard(player);
     bustCheckPlayer();
   });
   $("#stay").on("click",function(){
     $(".control").addClass("hidden");
-    printGamePrompt(player.name + " stays.")
+    printGamePrompt(player.name + " stays.");
     dealerPlays();
   });
   $("#exit").on("click",function(){
@@ -70,16 +74,21 @@
   //////////////////////////
 
   var start = function(){
-    unshuffledDeck = createDeck(5);
+    unshuffledDeck = createDeck(5);   // casino style with 5 decks
     shuffledDeck = shuffleDeck(unshuffledDeck);
+    console.log("======== START GAME ========")
     printBankroll();
     placeBet();
     dealCards();
   };
 
   var getPlayerName = function(){   // get player's name 
-    player.name = prompt("What is your name?", "Name");  // [make into input text field]
+    return prompt("What is your name?", "Name");
   };
+
+  var printPlayerName = function(){   // print player name on screen
+    $("#player-name").html(nameInput);
+  }
 
   var createDeck = function(numDecks){   // take in the number of decks and generate an unshuffled deck array
     var deck = [];
@@ -135,7 +144,7 @@
 
   var printGamePrompt = function(prompt){
     var $promptDiv = $("#game-prompts")
-    if($promptDiv.children().length > 4){
+    if($promptDiv.children().length > 7){
       $promptDiv.children().last().remove();
     }
     var $promptMsg = $("<p></p").addClass("prompt").html(prompt);
@@ -180,6 +189,7 @@
     player.currentBet = playerBet;   // set player currentBet to the input amount
     player.bankroll -= playerBet;   // decrement player bankroll by that amount
     printBankroll();
+    printGamePrompt(player.name + " bets " + playerBet);
   };
 
   var dealCards = function(){   // pop cards off the shuffled deck array and show 2 for each player
@@ -188,7 +198,6 @@
     dealer.currentHand.push(shuffledDeck.pop());   // (*) this should be face down
     player.currentHand.push(shuffledDeck.pop());
     dealer.currentHand.push(shuffledDeck.pop());
-    printGamePrompt("Deck has " + shuffledDeck.length + " cards left");
     // (*) [for now, just display cards all at once; later animate one at a time]
     printCurrentHand(player);
     printCurrentHand(dealer);
@@ -227,10 +236,8 @@
     if(player.handValue === 21 && dealer.handValue === 21){
       return true;
     } else if(player.handValue === 21) {
-      alert("YOU GOT BLACKJACK!!");   // [change these alerts later]
       return true;
     } else if(dealer.handValue === 21) {
-      alert("Dealer has BlackJack.");   // [change these alerts later]
       return true;
     }
   };
@@ -255,7 +262,8 @@
   var bustCheckPlayer = function(){   // check if player has busted
     console.log("bustCheckPlayer()");
     if(player.handValue > 21){
-      printGamePrompt("You BUSTED!!");
+      printGamePrompt("You BUSTED!! (" + player.handValue + ")");
+      alert("You BUSTED!! (" + player.handValue + ")");
       houseWins(player.currentBet);
     } else {
       hitOrStay();
@@ -276,8 +284,9 @@
 
   var bustCheckDealer = function(){   // check if dealer has busted
     console.log("bustCheckDealer()");
-    if(dealer.handValue > 21){   // if bust, housePays(player.currentBet);
-      printGamePrompt("Dealer has BUSTED!!");
+    if(dealer.handValue > 21){   // if bust, housePays(), else dealerPlays();
+      printGamePrompt("Dealer has BUSTED!! (" + dealer.handValue + ")");
+      alert("Dealer has BUSTED!! (" + dealer.handValue + ")");
       housePays(player.currentBet);
     } else {
       dealerPlays();
@@ -298,13 +307,16 @@
   var compareHands = function(playerHand, dealerHand){
     console.log("compareHands()");
     if(playerHand === dealerHand){
-      printGamePrompt("PUSH");
+      printGamePrompt("Push - " + player.name + " (" + playerHand + ") Dealer (" + dealerHand + ")");
+      alert("Push - " + player.name + " (" + playerHand + ") Dealer (" + dealerHand + ")");
       pushHands();
     } else if(playerHand > dealerHand){
-      printGamePrompt(player.name + " WINS!!!");
+      printGamePrompt(player.name + "(" + playerHand + ") WINS vs. "  + "Dealer (" + dealerHand + ")");
+      alert(player.name + "(" + playerHand + ") WINS vs. "  + "Dealer (" + dealerHand + ")");
       housePays(player.currentBet);
     } else if(playerHand < dealerHand){
-      printGamePrompt("Dealer Wins.");
+      printGamePrompt("Dealer (" + dealerHand + ") wins vs. " + player.name + "(" + playerHand + ")");
+      alert("Dealer (" + dealerHand + ") wins vs. " + player.name + "(" + playerHand + ")");
       houseWins();
     }
   };
@@ -316,9 +328,11 @@
       pushHands();
     } else if(playerHand > dealerHand){
       printGamePrompt(player.name + " WINS WITH BLACKJACK!!!");
+      alert("YOU GOT BLACKJACK!!");
       blackjackPay(player.currentBet);
     } else if(playerHand < dealerHand){
       printGamePrompt("Dealer Wins with Blackjack.");
+      alert("Dealer Wins with Blackjack.");
       houseWins();
     }
   };
@@ -357,9 +371,11 @@
 
   var redeal = function(){
     console.log("redeal()");
-    console.log("=========END HAND===========");
     resetHands();   // clear player and dealer currentHand
     resetBets();   // clear player currentBet
+    console.log("Deck has " + shuffledDeck.length + " cards left");
+    reshuffleCheck();   // check if deck needs reshuffling
+    console.log("========= NEW HAND =========");
     placeBet();   // prompt for bets
     dealCards();   // deal cards again
   }
@@ -373,9 +389,14 @@
     }
   }
 
-  // var reshuffle = function(){
-      // reshuffle if the deck runs out
-  // }
+  var reshuffleCheck = function(){   // reshuffle if deck runs out
+    if(shuffledDeck.length <= 10){
+      printGamePrompt("Reshuffling card decks...");
+      alert("Running low on cards... reshuffling...");
+      unshuffledDeck = createDeck(5);
+      shuffledDeck = shuffleDeck(unshuffledDeck);
+    }
+  };
 
   var gameOver = function(){
     alert("GAME OVER.");   // game over message
@@ -391,6 +412,7 @@
     resetHands();
     resetBets();
     resetBankroll();
+    printGamePrompt("Deck has " + shuffledDeck.length + " cards left");
     start();
   }
 
@@ -398,9 +420,11 @@
   /////// GAMEPLAY  ////////
   //////////////////////////
 
-  getPlayerName();
+  var nameInput = getPlayerName();
+  var player = new Player(nameInput);
+  printPlayerName();
   start();
-  
+
 // });
 
   //////////////////////////

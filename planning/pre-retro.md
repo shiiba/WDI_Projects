@@ -42,12 +42,13 @@ Please list bonus features you wish to accomplish time pending.
 Functionality
 - Split function
 - Double Down function
-- Blackjack check function
+- ~~Blackjack check function~~
+- ~~Blackjack payout~~
 - Can't bet more than you have in the bank
 - Insurance check function 
 
 Style
-- Better styling to make it look like a casino table
+- ~~Better styling to make it look like a casino table~~
 - ~~Image sprites for cards~~
 - Flip card / deal animation
 - Break out everything into classes
