@@ -40,10 +40,10 @@ Style
 Please list bonus features you wish to accomplish time pending.
 
 Functionality
-- Split function
 - ~~Double Down function~~
 - ~~Blackjack check function~~
 - ~~Blackjack payout~~
+- Split function (3/4 implemented)
 - Refactor out the alerts and make the game flow happen fully in-browser
 - Can't bet more than you have in the bank
 - Insurance check function 
@@ -52,7 +52,7 @@ Functionality
 Style
 - ~~Better styling to make it look (sorta) like a casino table~~
 - ~~Image sprites for cards~~
-- Deal animation
+- ~~Deal animation~~
 - ~~Dealer has one card face down~~
 - ~~Dealer face down card isn't inspectable~~
 - Some animation when you win money / get blackjack
