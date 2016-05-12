@@ -64,10 +64,10 @@
     printGamePrompt(player.name + " stays.");
     dealerPlays();
   });
-  $("#split").on("click",function(){
-    $(".control").addClass("hidden");
-    // split functionality
-  });
+  // $("#split").on("click",function(){
+  //   $(".control").addClass("hidden");
+  //   splitCards();
+  // });
 
   //////////////////////////
   /// GAMEPLAY FUNCTIONS ///
@@ -188,8 +188,8 @@
     printScore(player);
     if(blackjackCheck()){
       blackjackWin(player.handValue,dealer.handValue);
-    } else if (splitCheck()){
-      splitShow();
+    // } else if (splitCheck()){
+    //   splitShow();
     } else {
       hitOrStay();
     }
@@ -200,11 +200,11 @@
     $(".hitstay").removeClass("hidden");
   };
 
-  var splitShow = function(){
-    console.log("splitShow()");
-    $(".hitstay").removeClass("hidden");
-    $("#split").removeClass("hidden");
-  }
+  // var splitShow = function(){
+  //   console.log("splitShow()");
+  //   $(".hitstay").removeClass("hidden");
+  //   $("#split").removeClass("hidden");
+  // }
 
   var dealNextCard = function(person){
     console.log("dealNextCard()");
@@ -287,16 +287,17 @@
     }
   };
 
-  var splitCheck = function(){   // prompt user to hit or stay
-    console.log("splitCheck()");
-    if(player.currentHand[0].value === player.currentHand[1].value){
-      return true;
-    } else {
-      return false;
-    }
-  };
+  // var splitCheck = function(){   // prompt user to hit or stay
+  //   console.log("splitCheck()");
+  //   if(player.currentHand[0].value === player.currentHand[1].value){
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   var optimizeAce = function(player){   // checks for highest value of the Ace that doesn't bust
+    console.log("optimizeAce()");
     if(player.handValue < 12){
       player.handValue += 10;
     }
