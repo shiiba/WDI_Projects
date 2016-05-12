@@ -37,6 +37,7 @@ Overall, I'm pretty happy with how this came out after 2.5 days of work. Below, 
 
 ### Future Features (if time allowed)
 - Refactor out the alerts and make the game flow happen fully in-browser
+- Error handling for user inputs
 - Check so you can't bet more than you have in the bank
 - Insurance check function 
 - Break out everything into classes, encapsulate functions using more OOP JS
