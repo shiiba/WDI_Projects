@@ -22,7 +22,8 @@
     handValue: 0,
     hasAce: false,
     handDiv: "#dealer-hand",
-    scoreDiv: "#dealer-score"
+    scoreDiv: "#dealer-score",
+    hiddenCard: null
   };
 
   // card objects
@@ -63,6 +64,10 @@
     $(".control").addClass("hidden");
     printGamePrompt(player.name + " stays.");
     dealerPlays();
+  });
+  $("#double-down").on("click",function(){
+    $(".control").addClass("hidden");
+    doubleDown();
   });
   // $("#split").on("click",function(){
   //   $(".control").addClass("hidden");
@@ -128,6 +133,10 @@
       var $cardDiv = $("<div></div>").addClass(person.currentHand[i].class + " card");
       $handDiv.append($cardDiv);
     }
+    if(person.name === "Dealer"){
+      var $first = $("#dealer-hand").children().first();
+      $first.attr("class","card-back card");
+    }
   };
 
   var printCard = function(person,dealtCard){
@@ -175,7 +184,9 @@
   var dealCards = function(){   // pop cards off the shuffled deck array and show 2 for each player
     console.log("dealCards()");
     player.currentHand.push(shuffledDeck.pop());
-    dealer.currentHand.push(shuffledDeck.pop());   // (*) this should be face down
+    var dealerHidden = shuffledDeck.pop()   // (*) this should be face down
+    dealer.hiddenCard = dealerHidden;
+    dealer.currentHand.push(dealerHidden);
     player.currentHand.push(shuffledDeck.pop());
     dealer.currentHand.push(shuffledDeck.pop());
     // (*) [for now, just display cards all at once; later animate one at a time]
@@ -220,6 +231,9 @@
 
   var dealerPlays = function(){
     console.log("dealerPlays()");
+    var $first = $("#dealer-hand").children().first();
+    $first.removeClass("card-back");
+    $first.addClass(dealer.hiddenCard.class);
     printScore(dealer);
     if(dealer.handValue < 17){
       printGamePrompt("Dealer Hits!");
@@ -285,6 +299,16 @@
     } else if(dealer.handValue === 21) {
       return true;
     }
+  };
+
+  var doubleDown = function(){
+    console.log("doubleDown()");
+    printGamePrompt(player.name + " is doubling down...");
+    player.bankroll -= player.currentBet;
+    player.currentBet *= 2;
+    printBankroll();
+    dealNextCard(player);
+    dealerPlays();
   };
 
   // var splitCheck = function(){   // prompt user to hit or stay
@@ -400,6 +424,7 @@
     dealer.currentHand = [];
     dealer.handValue = 0;
     dealer.hasAce = false;
+    dealer.hiddenCard = null;
     $("#dealer-hand").empty();
     $("#dealer-score").empty();
   };
