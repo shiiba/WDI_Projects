@@ -1,6 +1,6 @@
 # Blackjack
 
-[www.LocationOfMyProject](www.enteryourprojecturl.com)
+**URL**: [http://shiiba.github.io/blackjack/blackjack.html](http://shiiba.github.io/blackjack/blackjack.html)
 
 ### Description
 Final project for Unit 1 of General Assembly's Web Development Immersive. Built after 2 weeks of HTML/CSS, Javascript & JQuery.
