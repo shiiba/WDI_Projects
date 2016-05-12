@@ -13,7 +13,18 @@
     this.handValue = 0,
     this.hasAce = false,
     this.handDiv = "#player-hand",
-    this.scoreDiv = "#player-score"
+    this.scoreDiv = "#player-score",
+    this.justDealt = false,
+    this.leftSplit = {
+      this.currentHand = [],
+      this.handValue = 0,
+      this.hasAce = false
+    },
+    this.rightSplit = {
+      this.currentHand = [],
+      this.handValue = 0,
+      this.hasAce = false
+    }
   };
 
   var dealer = {
@@ -23,7 +34,7 @@
     hasAce: false,
     handDiv: "#dealer-hand",
     scoreDiv: "#dealer-score",
-    hiddenCard: null
+    hiddenCard: null,
   };
 
   // card objects
@@ -69,10 +80,11 @@
     $(".control").addClass("hidden");
     doubleDown();
   });
-  // $("#split").on("click",function(){
-  //   $(".control").addClass("hidden");
-  //   splitCards();
-  // });
+  $("#split").on("click",function(){
+    $(".control").addClass("hidden");
+    splitCardDivs();
+    // splitCards();
+  });
 
   //////////////////////////
   /// GAMEPLAY FUNCTIONS ///
@@ -197,10 +209,11 @@
     setHandValue(player);
     setHandValue(dealer);
     printScore(player);
+    player.justDealt = true;
     if(blackjackCheck()){
       blackjackWin(player.handValue,dealer.handValue);
-    // } else if (splitCheck()){
-    //   splitShow();
+    } else if (splitCheck()){
+      splitShow();
     } else {
       hitOrStay();
     }
@@ -208,14 +221,18 @@
 
   var hitOrStay = function(){   // prompt user to hit or stay
     console.log("hitOrStay()");
-    $(".hitstay").removeClass("hidden");
+    if(player.justDealt === true){
+      $(".first").removeClass("hidden");
+    } else {
+      $(".hitstay").removeClass("hidden");
+    }
   };
 
-  // var splitShow = function(){
-  //   console.log("splitShow()");
-  //   $(".hitstay").removeClass("hidden");
-  //   $("#split").removeClass("hidden");
-  // }
+  var splitShow = function(){
+    console.log("splitShow()");
+    $(".first").removeClass("hidden");
+    $("#split").removeClass("hidden");
+  }
 
   var dealNextCard = function(person){
     console.log("dealNextCard()");
@@ -271,6 +288,7 @@
 
   var bustCheckPlayer = function(){   // check if player has busted
     console.log("bustCheckPlayer()");
+    player.justDealt = false;
     if(player.handValue > 21){
       printGamePrompt("You BUSTED!! (" + player.handValue + ")");
       alert("You BUSTED!! (" + player.handValue + ")");
@@ -311,14 +329,21 @@
     dealerPlays();
   };
 
-  // var splitCheck = function(){   // prompt user to hit or stay
-  //   console.log("splitCheck()");
-  //   if(player.currentHand[0].value === player.currentHand[1].value){
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
+  var splitCheck = function(){   // prompt user to hit or stay
+    console.log("splitCheck()");
+    if(player.currentHand[0].value === player.currentHand[1].value){
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  var splitCardDivs = function(){
+    $("#player-hand").append("<div id='split-left'></div>");
+    $("#player-hand").append("<div id='split-right'></div>");
+    $("#split-left").append($("#player-hand .card").first());
+    $("#split-right").append($("#player-hand .card").first());
+  };
 
   var optimizeAce = function(player){   // checks for highest value of the Ace that doesn't bust
     console.log("optimizeAce()");

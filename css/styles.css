@@ -45,6 +45,11 @@ h2 {
   margin: 10px 0 10px 0;
 }
 
+#split-left, #split-right {
+  width: 48%;
+  display: inline-block;
+}
+
 #player-score, #dealer-score {
   text-align: center;
 }
@@ -118,6 +123,13 @@ h2 {
   z-index: 3;
   background-size: cover;
   margin: 0 auto;
+  animation-name: dealCard;
+  animation-duration: .65s;
+}
+
+@keyframes dealCard {
+  0% {transform: translateX(2000px);}
+  100%{transform: translateX(0px);}
 }
 
 .score {
