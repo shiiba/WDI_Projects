@@ -2,7 +2,6 @@
 
 * {
   margin: 0;
-  /*background-color: rgb(0,144,47);*/
 }
 
 h1 {
@@ -127,319 +126,213 @@ h2 {
 /*PLAYING CARD SPRITES*/
 .ace-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -163px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .two-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -308px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .three-clubs{
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -452px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .four-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -594px -37px;
-  /*width: 142px;
-  height: 204px;*/
 }
 
 .five-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -737px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .six-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -880px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .seven-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1023px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .eight-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1166px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .nine-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1308px -37px;
-  /*width: 142px;
-  height: 204px;*/
 }
 
 .ten-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1451px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .jack-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1594px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .queen-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1737px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .king-clubs {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1880px -37px;
-  /*width: 141px;
-  height: 204px;*/
 }
 
 .ace-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -163px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .two-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -308px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .three-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -452px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .four-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -594px -243px;
-  /*width: 142px;
-  height: 203px;*/
 }
 
 .five-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -737px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .six-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -880px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .seven-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1023px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .eight-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1166px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .nine-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1308px -243px;
-  /*width: 142px;
-  height: 203px;*/
 }
 
 .ten-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1451px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .jack-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1594px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .queen-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1737px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .king-diamonds {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1880px -243px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .ace-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -163px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .two-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -308px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .three-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -452px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .four-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -594px -448px;
-  /*width: 142px;
-  height: 203px;*/
 }
 
 .five-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -737px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .six-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -880px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .seven-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1023px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .eight-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1166px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .nine-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1308px -448px;
-  /*width: 142px;
-  height: 203px;*/
 }
 
 .ten-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1451px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .jack-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1594px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .queen-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1737px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .king-hearts {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1880px -448px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .ace-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -163px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .two-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -308px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .three-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -452px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .four-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -594px -653px;
-  /*width: 142px;
-  height: 203px;*/
 }
 
 .five-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -737px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .six-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -880px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .seven-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1023px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .eight-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1166px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .nine-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1308px -653px;
-  /*width: 142px;
-  height: 203px;*/
 }
 
 .ten-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1451px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .jack-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1594px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .queen-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1737px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .king-spades {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -1880px -653px;
-  /*width: 141px;
-  height: 203px;*/
 }
 
 .card-back {
   background: url('imgs/svg-cards-spaced-sm.svg') no-repeat -457px -859px;
-  /*width: 141px;
-  height: 203px;*/
 }
 

@@ -44,14 +44,15 @@ Functionality
 - ~~Double Down function~~
 - ~~Blackjack check function~~
 - ~~Blackjack payout~~
+- Refactor out the alerts and make the game flow happen fully in-browser
 - Can't bet more than you have in the bank
 - Insurance check function 
 - Break out everything into classes
 
 Style
-- ~~Better styling to make it look like a casino table~~
+- ~~Better styling to make it look (sorta) like a casino table~~
 - ~~Image sprites for cards~~
-- Flip card / deal animation
+- Deal animation
 - ~~Dealer has one card face down~~
 - ~~Dealer face down card isn't inspectable~~
 - Some animation when you win money / get blackjack
