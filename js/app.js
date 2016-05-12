@@ -5,7 +5,9 @@
   //////////////////////////
 
   // player objects
-  function Player(name) {
+     // tried my hand out at a constructor function.
+     // the complexity of this object skyrocketed once i tried tackling the split logic
+  function Player(name) {   
     this.name = name,
     this.bankroll = 1000,
     this.currentBet = 0,
@@ -74,11 +76,11 @@
 
   // global control button event listeners
   $("#hit").on("click",function(){
-    $(".control").addClass("hidden");
-    if(player.split === true && player.splitHand === "left"){
+    $(".control").addClass("hidden");   // hides buttons until you can hit again
+    if(player.split === true && player.splitHand === "left"){   // split functionality for left hand
       printGamePrompt(player.name + " hits left.");
       splitDeal(player.leftSplit);
-    } else if(player.split === true && player.splitHand === "right"){
+    } else if(player.split === true && player.splitHand === "right"){   // split functionality for right hand
       printGamePrompt(player.name + " hits right.");
       splitDeal(player.rightSplit);
     } else {
@@ -89,12 +91,12 @@
   });
 
   $("#stay").on("click",function(){
-    if(player.split === true && player.splitHand === "left"){
+    if(player.split === true && player.splitHand === "left"){   // split functionality for left hand
       printGamePrompt(player.name + " stays left.");
       player.splitHand = "right";
       $("#split-left").removeClass("highlight");
-      $("#split-right").addClass("highlight");
-    } else if(player.split === true && player.splitHand === "right"){
+      $("#split-right").addClass("highlight");   // highlight right side with CSS
+    } else if(player.split === true && player.splitHand === "right"){   // split functionality for right hand
       printGamePrompt(player.name + " stays right.");
       dealerPlays();
     } else {
@@ -126,7 +128,7 @@
   var start = function(){
     unshuffledDeck = createDeck(5);   // casino style with 5 decks
     shuffledDeck = shuffleDeck(unshuffledDeck);
-    console.log("======== START GAME ========")
+    console.log("======== START GAME ========")   // i was using console.logs as a gameflow check of all the functions running
     printBankroll();
     placeBet();
     dealCards();
@@ -154,7 +156,7 @@
     return deck;
   };
 
-  var shuffleDeck = function(unshuffled){   // trying to shuffle using a modern Fisher-Yates algorithm
+  var shuffleDeck = function(unshuffled){   // shuffle using a modern Fisher-Yates algorithm
     var shuffled = [];
     var numTimes = unshuffled.length;
     for(var i=0;i<numTimes;i++){
@@ -184,20 +186,20 @@
     }
   };
 
-  var printCard = function(person,dealtCard){
+  var printCard = function(person,dealtCard){   // print out one card at a time
     var $handDiv = $(person.handDiv);
     var $cardDiv = $("<div></div>").addClass(dealtCard.class + " card");
     $handDiv.append($cardDiv);
   };
 
-  var printScore = function(person){
+  var printScore = function(person){   // print out the player's score
     var $scoreDiv = $(person.scoreDiv);
     $scoreDiv.empty();
     var $score = $("<div></div>").html("Hand Value: " + person.handValue);
     $scoreDiv.append($score);
   };
 
-  var printGamePrompt = function(prompt){
+  var printGamePrompt = function(prompt){   // print out the game log actions
     var $promptDiv = $("#game-prompts")
     if($promptDiv.children().length > 7){
       $promptDiv.children().last().remove();
@@ -206,7 +208,7 @@
     $promptDiv.prepend($promptMsg);
   }
 
-  var printBankroll = function(){
+  var printBankroll = function(){   // refresh the bankroll after a bet is placed
     var $bankDiv = $("#bank-vault");
     $bankDiv.empty();
     var $bet = $("<div id='current-bet'></div>").html("Current Bet: " + player.currentBet);
@@ -229,25 +231,25 @@
   var dealCards = function(){   // pop cards off the shuffled deck array and show 2 for each player
     console.log("dealCards()");
     player.currentHand.push(shuffledDeck.pop());
-    var dealerHidden = shuffledDeck.pop()   // (*) this should be face down
-    dealer.hiddenCard = dealerHidden;
+    var dealerHidden = shuffledDeck.pop()   // (*) this card should be face down
+    dealer.hiddenCard = dealerHidden;   // set hidden card object in dealer object
     dealer.currentHand.push(dealerHidden);
     player.currentHand.push(shuffledDeck.pop());
     dealer.currentHand.push(shuffledDeck.pop());
-    // (*) [for now, just display cards all at once; later animate one at a time]
-    printCurrentHand(player);
+    // (*) [for now, just display cards all at once; later try animate one at a time]
+    printCurrentHand(player);   // displays hands
     printCurrentHand(dealer);
-    setHasAce(player);
+    setHasAce(player);   // flags if they have an ace
     setHasAce(dealer);
-    setHandValue(player);
+    setHandValue(player);   // sets the value of each hand
     setHandValue(dealer);
-    printScore(player);
+    printScore(player);   // displays the player's score
     player.justDealt = true;
-    if(blackjackCheck()){
+    if(blackjackCheck()){   // checks for blackjack
       blackjackWin(player.handValue,dealer.handValue);
-    } else if (splitCheck()){
+    } else if (splitCheck()){   // checks for same cards to show split button
       splitShow();
-    } else {
+    } else {   // normal hit or stay options
       hitOrStay();
     }
   };
@@ -261,13 +263,13 @@
     }
   };
 
-  var splitShow = function(){
+  var splitShow = function(){   // display split buttons
     console.log("splitShow()");
     $(".first").removeClass("hidden");
     $("#split").removeClass("hidden");
   }
 
-  var dealNextCard = function(person){
+  var dealNextCard = function(person){   // deals another card to a player & prints new DOM values
     console.log("dealNextCard()");
     var card = shuffledDeck.pop();   // pops off next card in the shuffled deck array
     person.currentHand.push(card);
@@ -279,13 +281,13 @@
     printScore(person);
   };
 
-  var dealerPlays = function(){
+  var dealerPlays = function(){   // dealer starts playing
     console.log("dealerPlays()");
     var $first = $("#dealer-hand").children().first();
     $first.removeClass("card-back");
-    $first.addClass(dealer.hiddenCard.class);
-    printScore(dealer);
-    if(dealer.handValue < 17){
+    $first.addClass(dealer.hiddenCard.class);   // reveals the facedown card
+    printScore(dealer); // displays dealer's score
+    if(dealer.handValue < 17){   // dealer automated hit/stay logic
       printGamePrompt("Dealer Hits!");
       dealNextCard(dealer); 
       bustCheckDealer();
@@ -295,7 +297,7 @@
     }
   };
 
-  var dealerStay = function(){
+  var dealerStay = function(){   // compares hands once the dealer stays
     console.log("dealerStay()");
     if(player.split === true){
       compareHandsSplit(player.leftSplit.handValue, player.rightSplit.handValue, dealer.handValue);
@@ -323,7 +325,7 @@
     }
   };
 
-  var bustCheckPlayer = function(hand){   // check if player has busted
+  var bustCheckPlayer = function(hand){   // check if player has busted; alternating hitting hands if the player has split
     console.log("bustCheckPlayer()");
     player.justDealt = false;
     if(player.split === true && player.splitHand === "left" && hand.handValue > 21){
@@ -370,7 +372,8 @@
     }
   };
 
-  var blackjackCheck = function(){
+  var blackjackCheck = function(){   // returns true if someone has a blackjack
+    console.log("blackjackCheck()");
     if(player.handValue === 21 && dealer.handValue === 21){
       return true;
     } else if(player.handValue === 21) {
@@ -380,7 +383,7 @@
     }
   };
 
-  var doubleDown = function(){
+  var doubleDown = function(){   // doubles down by only allowing for one more card & doubling the currentBet
     console.log("doubleDown()");
     printGamePrompt(player.name + " is doubling down...");
     player.bankroll -= player.currentBet;
@@ -390,7 +393,7 @@
     dealerPlays();
   };
 
-  var splitCheck = function(){   // prompt user to hit or stay
+  var splitCheck = function(){   // only show split button if cards match
     console.log("splitCheck()");
     if(player.currentHand[0].value === player.currentHand[1].value){
       return true;
@@ -399,7 +402,7 @@
     }
   };
 
-  var splitCardDivs = function(){
+  var splitCardDivs = function(){   // shows the split in the DOM & update visuals
     console.log("splitCardDivs()");
     $("#player-hand").append("<div id='split-left'></div>");
     $("#player-hand").append("<div id='split-right'></div>");
@@ -414,7 +417,7 @@
     printGamePrompt(player.name + "splits and doubles bet to " + player.currentBet);
   };
 
-  var splitDeal = function(hand){
+  var splitDeal = function(hand){   // deals an individual hand
     console.log("splitDeal()");
     dealNextCard(hand);
     bustCheckPlayer(hand);
@@ -427,7 +430,7 @@
     }
   };
 
-  var compareHands = function(playerHand, dealerHand){
+  var compareHands = function(playerHand, dealerHand){   // compares hands and logs result in alerts and game log
     console.log("compareHands()");
       if(playerHand === dealerHand){
         printGamePrompt("Push - " + player.name + " (" + playerHand + ") Dealer (" + dealerHand + ")");
@@ -444,6 +447,7 @@
       }
   };
 
+// OK so this function doesn't fully work. I'm getting too lost in the 3-dimensional contingent logic, and I don't have enough time to fix & debug this. Sad face :(. if I had more time, I think I would totally refactor the way compare hands works so that they don't immediately call payment functions, so that I could pass in combinations of hands to check wins, tally up wins, and pay out at the end.
   var compareHandsSplit = function(leftHand, rightHand, dealerHand){
     console.log("compareHandsSplit()");
     if(leftHand.busted === false && rightHand.busted === false){
@@ -477,7 +481,7 @@
     }
   };
 
-  var blackjackWin = function(playerHand, dealerHand){
+  var blackjackWin = function(playerHand, dealerHand){   // pays out if someone has blackjack (does not work for split hands yet)
     console.log("blackjackWin()");
     if(playerHand === dealerHand){
       printGamePrompt("Blackjack PUSH");
@@ -494,7 +498,7 @@
   };
 
 // PAY FUNCTIONS
-  var houseWins = function(){
+  var houseWins = function(){   // takes all the moneyz
     console.log("houseWins()");
     player.currentBet = 0;   // sets players currentBet to zero
     printBankroll();
@@ -503,7 +507,7 @@
     }
   };
 
-  var housePays = function(bet){
+  var housePays = function(bet){   // doubles the currentBet
     console.log("housePays()");
     printGamePrompt("Dealer pays player " + bet*2);
     player.bankroll += (bet * 2)   // player's bankroll increases by double their currentBet amount
@@ -511,7 +515,7 @@
     redeal();
   };
 
-  var blackjackPay = function(bet){
+  var blackjackPay = function(bet){   // pays out using blackjack pay rules
     console.log("blackjackPay()");
     printGamePrompt("Dealer pays player " + (Math.round(bet*3/2)));
     player.bankroll += (Math.round(bet*3/2))   // player's bankroll increases by double their currentBet amount
@@ -519,7 +523,7 @@
     redeal();
   }
 
-  var pushHands = function(){
+  var pushHands = function(){   // bet is returned
     console.log("pushHands()");
     player.bankroll += player.currentBet;   // add player's currentBet back to their bankroll
     printBankroll();
@@ -542,11 +546,12 @@
     player.bankroll = 1000;
   };
 
-  var resetBets = function(){
+  var resetBets = function(){   // resets current bet
     console.log("resetBets()");
     player.currentBet = 0;
   };
 
+  // I realize this function is ridonkulously long. There are definitely much better ways to refactor this, but I didn't anticipate how long it would get once I started the split functionality. Unfortunately, I ran out of time.
   var resetHands = function(){
     console.log("resetHands()");
     player.currentHand = [];
@@ -573,7 +578,7 @@
     $("#dealer-score").empty();
   };
 
-  var bankrollCheck = function(){
+  var bankrollCheck = function(){   // if player runs out of money, game over
     console.log("bankrollCheck()");
     if(player.bankroll <= 0){
       gameOver();
@@ -601,7 +606,7 @@
     }
   }
 
-  var replay = function(){
+  var replay = function(){  // fully replay
     resetHands();
     resetBets();
     resetBankroll();
