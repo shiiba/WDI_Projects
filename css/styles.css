@@ -35,7 +35,8 @@ h2 {
 
 #game-section {
   width: 100%;
-  height: 175px;
+  min-height: 175px;
+  height: auto;
   background-color: lightcyan;
   border: solid 2px black;
 }
@@ -47,11 +48,18 @@ h2 {
 
 #split-left, #split-right {
   width: 48%;
+  min-height: 100%;
   display: inline-block;
+  overflow: auto;
+  vertical-align: top;
 }
 
 #player-score, #dealer-score {
   text-align: center;
+}
+
+.highlight {
+  border: dotted 2px cyan;
 }
 
 #game-flow {
@@ -99,6 +107,7 @@ h2 {
   color: #ffffff;
   font-size: 14px;
   background: #39a5ed;
+  margin-top: 10px;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
 }

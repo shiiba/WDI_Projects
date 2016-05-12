@@ -15,17 +15,25 @@
     this.handDiv = "#player-hand",
     this.scoreDiv = "#player-score",
     this.justDealt = false,
+    this.split = false,
+    this.splitHand = "left";
     this.leftSplit = {
-      this.currentHand = [],
-      this.handValue = 0,
-      this.hasAce = false
-    },
-    this.rightSplit = {
-      this.currentHand = [],
-      this.handValue = 0,
-      this.hasAce = false
+      name: name,
+      currentHand: [],
+      handValue: 0,
+      hasAce: false,
+      handDiv: "#split-left",
+      busted: false
     }
-  };
+    this.rightSplit = {
+      name: name,
+      currentHand: [],
+      handValue: 0,
+      hasAce: false,
+      handDiv: "#split-right",
+      busted: false
+    }
+};
 
   var dealer = {
     name: "Dealer",
@@ -67,23 +75,48 @@
   // global control button event listeners
   $("#hit").on("click",function(){
     $(".control").addClass("hidden");
-    printGamePrompt(player.name + " hits.");
-    dealNextCard(player);
-    bustCheckPlayer();
+    if(player.split === true && player.splitHand === "left"){
+      printGamePrompt(player.name + " hits left.");
+      splitDeal(player.leftSplit);
+    } else if(player.split === true && player.splitHand === "right"){
+      printGamePrompt(player.name + " hits right.");
+      splitDeal(player.rightSplit);
+    } else {
+      printGamePrompt(player.name + " hits.");
+      dealNextCard(player);
+      bustCheckPlayer();
+    }
   });
+
   $("#stay").on("click",function(){
-    $(".control").addClass("hidden");
-    printGamePrompt(player.name + " stays.");
-    dealerPlays();
+    if(player.split === true && player.splitHand === "left"){
+      printGamePrompt(player.name + " stays left.");
+      player.splitHand = "right";
+      $("#split-left").removeClass("highlight");
+      $("#split-right").addClass("highlight");
+    } else if(player.split === true && player.splitHand === "right"){
+      printGamePrompt(player.name + " stays right.");
+      dealerPlays();
+    } else {
+      $(".control").addClass("hidden");
+      printGamePrompt(player.name + " stays.");
+      dealerPlays();
+    }
   });
+
   $("#double-down").on("click",function(){
     $(".control").addClass("hidden");
     doubleDown();
   });
+
   $("#split").on("click",function(){
-    $(".control").addClass("hidden");
+    $("#split").addClass("hidden");
+    $("#player-score").addClass("hidden");
+    player.split = true;
     splitCardDivs();
-    // splitCards();
+    if(player.splitHand === "left"){
+      $("#split-left").addClass("highlight");   // highlight left side with CSS
+    }
   });
 
   //////////////////////////
@@ -264,7 +297,11 @@
 
   var dealerStay = function(){
     console.log("dealerStay()");
-    compareHands(player.handValue, dealer.handValue);
+    if(player.split === true){
+      compareHandsSplit(player.leftSplit.handValue, player.rightSplit.handValue, dealer.handValue);
+    } else {
+      compareHands(player.handValue, dealer.handValue);
+    }
   };
 
 // SET, BUST & COMPARE FUNCTIONS
@@ -286,15 +323,35 @@
     }
   };
 
-  var bustCheckPlayer = function(){   // check if player has busted
+  var bustCheckPlayer = function(hand){   // check if player has busted
     console.log("bustCheckPlayer()");
     player.justDealt = false;
-    if(player.handValue > 21){
-      printGamePrompt("You BUSTED!! (" + player.handValue + ")");
-      alert("You BUSTED!! (" + player.handValue + ")");
-      houseWins(player.currentBet);
+    if(player.split === true && player.splitHand === "left" && hand.handValue > 21){
+      printGamePrompt("You BUSTED!! (" + hand.handValue + ")");
+      alert("You BUSTED!! (" + hand.handValue + ")");
+      player.leftSplit.busted = true;
+      player.splitHand = "right";
+      $("#split-left").removeClass("highlight");
+      $("#split-right").addClass("highlight");
+      $(".hitstay").removeClass("hidden");
+    } else if(player.split === true && player.splitHand === "right" && hand.handValue > 21){
+      printGamePrompt("You BUSTED!! (" + hand.handValue + ")");
+      alert("You BUSTED!! (" + hand.handValue + ")");
+      $("#split-right").removeClass("highlight")
+      player.rightSplit.busted = true;
+      if(player.leftSplit.busted === true){
+        houseWins(player.currentBet);
+      } else {
+        dealerPlays();
+      }
     } else {
-      hitOrStay();
+      if(player.handValue > 21){
+        printGamePrompt("You BUSTED!! (" + player.handValue + ")");
+        alert("You BUSTED!! (" + player.handValue + ")");
+        houseWins(player.currentBet);
+      } else {
+        hitOrStay();
+      }
     }
   };
 
@@ -303,7 +360,11 @@
     if(dealer.handValue > 21){   // if bust, housePays(), else dealerPlays();
       printGamePrompt("Dealer has BUSTED!! (" + dealer.handValue + ")");
       alert("Dealer has BUSTED!! (" + dealer.handValue + ")");
-      housePays(player.currentBet);
+      if(player.split === true){
+        housePays((!player.leftSplit.busted * player.currentBet/2)+(!player.rightSplit.busted * player.currentBet/2));
+      } else {
+        housePays(player.currentBet);
+      }
     } else {
       dealerPlays();
     }
@@ -339,10 +400,24 @@
   };
 
   var splitCardDivs = function(){
+    console.log("splitCardDivs()");
     $("#player-hand").append("<div id='split-left'></div>");
     $("#player-hand").append("<div id='split-right'></div>");
-    $("#split-left").append($("#player-hand .card").first());
-    $("#split-right").append($("#player-hand .card").first());
+    player.leftSplit.currentHand.push(player.currentHand.shift());
+    player.rightSplit.currentHand.push(player.currentHand.shift());
+    $("#player-hand .card").remove();
+    printCurrentHand(player.leftSplit);
+    printCurrentHand(player.rightSplit);
+    player.bankroll -= player.currentBet;
+    player.currentBet *= 2;
+    printBankroll();
+    printGamePrompt(player.name + "splits and doubles bet to " + player.currentBet);
+  };
+
+  var splitDeal = function(hand){
+    console.log("splitDeal()");
+    dealNextCard(hand);
+    bustCheckPlayer(hand);
   };
 
   var optimizeAce = function(player){   // checks for highest value of the Ace that doesn't bust
@@ -354,18 +429,51 @@
 
   var compareHands = function(playerHand, dealerHand){
     console.log("compareHands()");
-    if(playerHand === dealerHand){
-      printGamePrompt("Push - " + player.name + " (" + playerHand + ") Dealer (" + dealerHand + ")");
-      alert("Push - " + player.name + " (" + playerHand + ") Dealer (" + dealerHand + ")");
-      pushHands();
-    } else if(playerHand > dealerHand){
-      printGamePrompt(player.name + "(" + playerHand + ") WINS vs. "  + "Dealer (" + dealerHand + ")");
-      alert(player.name + "(" + playerHand + ") WINS vs. "  + "Dealer (" + dealerHand + ")");
-      housePays(player.currentBet);
-    } else if(playerHand < dealerHand){
-      printGamePrompt("Dealer (" + dealerHand + ") wins vs. " + player.name + "(" + playerHand + ")");
-      alert("Dealer (" + dealerHand + ") wins vs. " + player.name + "(" + playerHand + ")");
-      houseWins();
+      if(playerHand === dealerHand){
+        printGamePrompt("Push - " + player.name + " (" + playerHand + ") Dealer (" + dealerHand + ")");
+        alert("Push - " + player.name + " (" + playerHand + ") Dealer (" + dealerHand + ")");
+        pushHands();
+      } else if(playerHand > dealerHand){
+        printGamePrompt(player.name + "(" + playerHand + ") WINS vs. "  + "Dealer (" + dealerHand + ")");
+        alert(player.name + "(" + playerHand + ") WINS vs. "  + "Dealer (" + dealerHand + ")");
+        housePays(player.currentBet);
+      } else if(playerHand < dealerHand){
+        printGamePrompt("Dealer (" + dealerHand + ") wins vs. " + player.name + "(" + playerHand + ")");
+        alert("Dealer (" + dealerHand + ") wins vs. " + player.name + "(" + playerHand + ")");
+        houseWins();
+      }
+  };
+
+  var compareHandsSplit = function(leftHand, rightHand, dealerHand){
+    console.log("compareHandsSplit()");
+    if(leftHand.busted === false && rightHand.busted === false){
+      if(leftHand > dealerHand && rightHand > dealerHand){
+        printGamePrompt("Won both hands!!");
+        alert("Won both hands!!");
+        housePays(player.currentBet);
+      } else if (dealerHand === leftHand && dealerhand === rightHand){
+        printGamePrompt("Push both.");
+        alert("Push both.");
+        pushHands();
+      } else if (dealerHand > leftHand || dealerhand > rightHand){
+        printGamePrompt("Won one hand!!");
+        alert("Won one hand!!");
+        housePays(player.currentBet/2);
+      }
+    } else {
+      if((leftHand.busted === false && leftHand > dealerHand) || (rightHand.busted === false && rightHand > dealerHand)){
+        printGamePrompt("Won one hand!!");
+        alert("Won one hand!!");
+        housePays(player.currentBet/2);
+      } else if((leftHand.busted === false && leftHand === dealerHand) || (rightHand.busted === false && rightHand === dealerHand)){
+        printGamePrompt("Push.");
+        alert("Push.");
+        pushHands();
+      } else {
+        printGamePrompt("Dealer wins both.");
+        alert("Dealer wins both");
+        houseWins();
+      }
     }
   };
 
@@ -444,8 +552,19 @@
     player.currentHand = [];
     player.handValue = 0;
     player.hasAce = false;
+    player.split = false;
+    player.splitHand = "left";
+    player.leftSplit.currentHand = [];
+    player.leftSplit.handValue = 0;
+    player.leftSplit.hasAce = false;
+    player.leftSplit.busted = false;
+    player.rightSplit.currentHand = [];
+    player.rightSplit.handValue = 0;
+    player.rightSplit.hasAce = false;
+    player.rightSplit.busted = false;
     $("#player-hand").empty();
     $("#player-score").empty();
+    $("#player-score").removeClass("hidden");
     dealer.currentHand = [];
     dealer.handValue = 0;
     dealer.hasAce = false;
