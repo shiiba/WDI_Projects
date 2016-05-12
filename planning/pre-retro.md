@@ -41,7 +41,7 @@ Please list bonus features you wish to accomplish time pending.
 
 Functionality
 - Split function
-- Double Down function
+- ~~Double Down function~~
 - ~~Blackjack check function~~
 - ~~Blackjack payout~~
 - Can't bet more than you have in the bank
@@ -52,8 +52,8 @@ Style
 - ~~Better styling to make it look like a casino table~~
 - ~~Image sprites for cards~~
 - Flip card / deal animation
-- Dealer has one card face down
-- Dealer face down card isn't inspectable
+- ~~Dealer has one card face down~~
+- ~~Dealer face down card isn't inspectable~~
 - Some animation when you win money / get blackjack
 - Keep track of how much you've won & lost
 - Game stats (win percentage; ROI)
